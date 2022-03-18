@@ -4,6 +4,7 @@ import com.example.domain.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class MockUserService {
     User user1 = new User(1, "A. User", true );
@@ -15,5 +16,9 @@ public class MockUserService {
 
     public ArrayList<User> allUsers() {
         return users;
+    }
+
+    public Optional<User> findUser(int id) {
+        return users.stream().filter(user -> user.getId() == id).findFirst();
     }
 }
