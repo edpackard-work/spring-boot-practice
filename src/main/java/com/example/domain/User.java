@@ -5,6 +5,12 @@ public class User {
     private String name;
     private boolean active;
 
+    public User (int id, String name, boolean active) {
+        this.id = id;
+        this.name = name;
+        this.active = active;
+    }
+
     public int getId() {
         return this.id;
     }
