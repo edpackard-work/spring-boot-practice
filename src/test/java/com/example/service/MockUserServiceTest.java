@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.domain.User;
+import com.example.exception.BadDataException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class MockUserServiceTest {
     }
 
     @Test
-    public void shouldReturnUserById() {
+    public void shouldReturnUserById() throws BadDataException {
         User testUser = (service.findUser(2));
 
         assertEquals(2, testUser.getId());
@@ -39,9 +40,8 @@ public class MockUserServiceTest {
     }
 
     @Test
-    public void shouldReturnNullIfIdNotFound() {
-        User testUser = (service.findUser(4));
-
-        assertNull(testUser);
+    public void shouldThrowBadDataExceptionIfIdNotFound() {
+        BadDataException e = assertThrows(BadDataException.class, () -> {
+            service.findUser(4);});
     }
 }

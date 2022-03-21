@@ -23,9 +23,7 @@ public class User {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public boolean getActive() {
         return this.active;
