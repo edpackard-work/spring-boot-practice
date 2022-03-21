@@ -18,7 +18,7 @@ public class DemoControllerTest {
 
     @Test
     public void shouldReturnGreeting() throws Exception {
-        this.mockMvc.perform(get("/"))
+        this.mockMvc.perform(get("/demo"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello World")));
     }

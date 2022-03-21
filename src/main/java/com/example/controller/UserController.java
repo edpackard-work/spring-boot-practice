@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RestController
 public class UserController {
 
-    MockUserService userService = new MockUserService();
+    private final MockUserService userService;
+
+    public UserController(MockUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping()
     public ArrayList<User> getUsers() {
@@ -20,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public Optional<User> getById(@PathVariable int id) {
+    public User getById(@PathVariable int id) {
         return(userService.findUser(id));
     }
 }

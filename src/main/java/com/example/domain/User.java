@@ -27,7 +27,7 @@ public class User {
         this.name = name;
     }
 
-    public boolean getActive(boolean active) {
+    public boolean getActive() {
         return this.active;
     }
 
