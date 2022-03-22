@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class MockUserService {
-    User user1 = new User(1, "A. User", true );
-    User user2 = new User (2, "B. Prepared", true);
-    User user3 = new User (3, "C. U. Later", false);
 
     ArrayList<User> users = new ArrayList<User>(
-            Arrays.asList(user1, user2, user3));
+            Arrays.asList(
+                    new User(1, "A. User", true ),
+                    new User (2, "B. Prepared", true),
+                    new User (3, "C. U. Later", false)
+                )
+            );
 
     public ArrayList<User> allUsers() {
         return users;
