@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.domain.User;
+import com.example.exception.BadDataException;
 import com.example.service.MockUserService;
 import org.junit.jupiter.api.Test;
 
@@ -63,5 +64,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(140))
                 .andExpect(jsonPath("$.name").value("I. M. Returned"))
                 .andExpect(jsonPath("$.active").value(true));
+    }
+
+    @Test
+    public void shouldHandleWhenUserIDNotFound() throws Exception {
+        when(this.mockUserService.findUser(9999)).thenThrow(BadDataException.class);
+        this.mockMvc.perform(get("/user/9999"))
+                .andExpect(status().is(404));
+
     }
 }

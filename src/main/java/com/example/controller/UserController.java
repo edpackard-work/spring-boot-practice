@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.domain.User;
+import com.example.exception.BadDataException;
 import com.example.service.MockUserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public User getById(@PathVariable int id) {
-        try {
-            return userService.findUser(id);
-        } catch (Exception e) {
-            return null;
-        }
+    public User getById(@PathVariable int id) throws BadDataException {
+        return userService.findUser(id);
     }
 }
