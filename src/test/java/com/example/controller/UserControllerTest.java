@@ -37,7 +37,7 @@ public class UserControllerTest {
         when(this.mockUserService.allUsers())
                 .thenReturn(users);
 
-        this.mockMvc.perform(get("/"))
+        this.mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(3))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -57,7 +57,7 @@ public class UserControllerTest {
 
         when(this.mockUserService.findUser(140)).thenReturn(user140);
 
-        this.mockMvc.perform(get("/140"))
+        this.mockMvc.perform(get("/user/140"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(3))
                 .andExpect(jsonPath("$.id").value(140))

@@ -18,12 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping("/user")
     public ArrayList<User> getUsers() {
         return userService.allUsers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/user/{id}")
     public User getById(@PathVariable int id) {
         try {
             return userService.findUser(id);
