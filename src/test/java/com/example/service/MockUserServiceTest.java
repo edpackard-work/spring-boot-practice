@@ -19,15 +19,15 @@ public class MockUserServiceTest {
         assertEquals(3, result.size());
         assertEquals(1, result.get(0).getId());
         assertEquals("A. User", result.get(0).getName());
-        assertTrue(result.get(0).getActive());
+        assertTrue(result.get(0).isActive());
 
         assertEquals(2, result.get(1).getId());
         assertEquals("B. Prepared", result.get(1).getName());
-        assertTrue(result.get(1).getActive());
+        assertTrue(result.get(1).isActive());
 
         assertEquals(3, result.get(2).getId());
         assertEquals("C. U. Later", result.get(2).getName());
-        assertFalse(result.get(2).getActive());
+        assertFalse(result.get(2).isActive());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class MockUserServiceTest {
 
         assertEquals(2, testUser.getId());
         assertEquals( "B. Prepared", testUser.getName());
-        assertTrue(testUser.getActive());
+        assertTrue(testUser.isActive());
     }
 
     @Test
