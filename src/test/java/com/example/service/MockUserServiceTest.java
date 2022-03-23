@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MockUserServiceTest {
 
-    MockUserService service = new MockUserService();
+    MockUserService service = new MockUserService(true);
 
     @Test
     public void shouldReturnAllUsers() {
