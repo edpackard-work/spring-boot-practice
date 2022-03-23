@@ -31,4 +31,9 @@ public class UserController {
     public User createUser(@RequestBody User requestBody) {
         return userService.addUser(requestBody);
     }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable int id) throws BadDataException {
+        userService.deleteUser(id);
+    }
 }
