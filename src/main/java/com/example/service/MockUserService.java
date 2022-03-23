@@ -36,12 +36,7 @@ public class MockUserService {
     }
 
     public User findUser(int id) throws BadDataException {
-        List<User> user = findById(id);
-        if (user.size() == 1) {
-            return user.get(0);
-        } else {
-            throw new BadDataException();
-        }
+       return findById(id);
     }
 
     public User addUser(User inputData) {
@@ -52,27 +47,24 @@ public class MockUserService {
     }
 
     public void deleteUser(int id) throws BadDataException {
-        List<User> user = findById(id);
-        if (user.size() == 1) {
-            users.remove(user.get(0));
-        } else {
-            throw new BadDataException();
-        }
+        User user = findUser(id);
+        users.remove(user);
     }
 
     public void toggleStatus(int id) throws BadDataException {
-        List<User> user = findById(id);
-        if (user.size() == 1) {
-            user.get(0).setActive(!user.get(0).isActive());
+        User user = findUser(id);
+        user.setActive(!user.isActive());
+    }
+
+    private User findById(int id) throws BadDataException {
+        List<User> result = users.stream()
+                .filter(user -> user.getId() == id)
+                .collect(Collectors.toList());
+        if (result.size() == 1) {
+            return result.get(0);
         } else {
             throw new BadDataException();
         }
-    }
-
-    private List<User> findById(int id) {
-        return users.stream()
-                .filter(user -> user.getId() == id)
-                .collect(Collectors.toList());
     }
 
 }
