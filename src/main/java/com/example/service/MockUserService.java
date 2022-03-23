@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.domain.User;
 import com.example.exception.BadDataException;
 
+import com.example.util.Randomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,5 +45,12 @@ public class MockUserService {
         } else {
             throw new BadDataException();
         }
+    }
+
+    public User addUser(User inputData) {
+        int id = Randomizer.generateRandomNumber();
+        User newUser = new User(id, inputData.getName(), active);
+        users.add(newUser);
+        return newUser;
     }
 }

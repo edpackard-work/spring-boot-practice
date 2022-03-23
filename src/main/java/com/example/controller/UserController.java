@@ -4,9 +4,7 @@ import com.example.domain.User;
 import com.example.exception.BadDataException;
 import com.example.service.MockUserService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -27,5 +25,10 @@ public class UserController {
     @GetMapping("/user/{id}")
     public User getById(@PathVariable int id) throws BadDataException {
         return userService.findUser(id);
+    }
+
+    @PostMapping("/user")
+    public User createUser(@RequestBody User requestBody) {
+        return userService.addUser(requestBody);
     }
 }
