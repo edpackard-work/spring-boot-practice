@@ -60,6 +60,15 @@ public class MockUserService {
         }
     }
 
+    public void toggleStatus(int id) throws BadDataException {
+        List<User> user = findById(id);
+        if (user.size() == 1) {
+            user.get(0).setActive(!user.get(0).isActive());
+        } else {
+            throw new BadDataException();
+        }
+    }
+
     private List<User> findById(int id) {
         return users.stream()
                 .filter(user -> user.getId() == id)

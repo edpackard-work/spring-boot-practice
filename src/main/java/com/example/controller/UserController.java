@@ -6,6 +6,7 @@ import com.example.service.MockUserService;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 
 @RestController
@@ -35,5 +36,10 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable int id) throws BadDataException {
         userService.deleteUser(id);
+    }
+
+    @PutMapping("/user/{id}")
+    public void toggleUserStatus(@PathVariable int id) throws BadDataException {
+        userService.toggleStatus(id);
     }
 }
