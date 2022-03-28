@@ -4,6 +4,7 @@ import com.example.domain.User;
 import com.example.exception.BadDataException;
 
 import com.example.util.Randomizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:application.properties")
 public class MockUserService {
 
-    ArrayList<User> users = new ArrayList<User>(
+    ArrayList<User> users = new ArrayList<>(
             Arrays.asList(
                     new User(1, "A. User", true ),
                     new User (2, "B. Prepared", true),
@@ -26,6 +27,9 @@ public class MockUserService {
             );
 
     boolean active;
+
+    @Autowired
+    Randomizer randomizer;
 
     public MockUserService( @Value("${user.default-active}") boolean defaultActive) {
         this.active = defaultActive;
@@ -39,9 +43,9 @@ public class MockUserService {
        return findById(id);
     }
 
-    public User addUser(User inputData) {
-        int id = Randomizer.generateRandomNumber();
-        User newUser = new User(id, inputData.getName(), active);
+    public User addUser(String name) {
+        int id = randomizer.generateRandomNumber();
+        User newUser = new User(id, name, active);
         users.add(newUser);
         return newUser;
     }

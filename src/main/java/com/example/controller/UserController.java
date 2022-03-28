@@ -4,9 +4,11 @@ import com.example.domain.User;
 import com.example.exception.BadDataException;
 import com.example.service.MockUserService;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
@@ -29,17 +31,19 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User requestBody) {
-        return userService.addUser(requestBody);
+    public User createUser(@Valid @RequestBody User requestBody) {
+        return userService.addUser(requestBody.getName());
     }
 
     @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable int id) throws BadDataException {
+    public ResponseEntity deleteUser(@PathVariable int id) throws BadDataException {
         userService.deleteUser(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/user/{id}")
-    public void toggleUserStatus(@PathVariable int id) throws BadDataException {
+    public ResponseEntity toggleUserStatus(@PathVariable int id) throws BadDataException {
         userService.toggleStatus(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
