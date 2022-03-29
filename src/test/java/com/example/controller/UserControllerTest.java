@@ -3,18 +3,20 @@ package com.example.controller;
 import com.example.domain.User;
 import com.example.exception.BadDataException;
 import com.example.service.MockUserService;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,7 +34,7 @@ public class UserControllerTest {
         User user1 = (new User(1, "A. Mock", true));
         User user2 = (new User(2, "B. Mocking", true));
         User user3 = (new User(3, "M. V. C. Test", false));
-        ArrayList<User> users = new ArrayList<User>(
+        ArrayList<User> users = new ArrayList<>(
                 Arrays.asList(user1, user2, user3));
 
         when(this.mockUserService.allUsers())
@@ -70,7 +72,75 @@ public class UserControllerTest {
     public void shouldHandleWhenUserIDNotFound() throws Exception {
         when(this.mockUserService.findUser(9999)).thenThrow(BadDataException.class);
         this.mockMvc.perform(get("/user/9999"))
-                .andExpect(status().is(404));
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
+    }
 
+    @Test
+    public void shouldHandleValidPostRequest() throws Exception {
+
+        JSONObject fakeReq = new JSONObject();
+        fakeReq.put("name", "A. Postroute");
+        User fakeRes = (new User( 44, "A. Postroute", true));
+
+        when(this.mockUserService.addUser("A. Postroute")).thenReturn(fakeRes);
+
+        this.mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(fakeReq)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(3))
+                .andExpect(jsonPath("$.id").value(44))
+                .andExpect(jsonPath("$.name").value("A. Postroute"))
+                .andExpect(jsonPath("$.active").value(true));
+    }
+
+    @Test
+    public void shouldHandleInvalidPostRequest() throws Exception {
+
+        JSONObject fakeReq = new JSONObject();
+        fakeReq.put("this_is_a", "bad_request");
+
+        this.mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(fakeReq)))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
+    }
+
+    @Test
+    public void shouldHandleValidDeleteRequest() throws Exception {
+        this.mockMvc.perform(delete("/user/1"))
+                .andExpect(status().is(204))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
+        verify(mockUserService).deleteUser(1);
+    }
+
+    @Test
+    public void shouldHandleDeleteRequestWithNonExistentId() throws Exception {
+        doThrow(BadDataException.class)
+                .when(mockUserService)
+                .deleteUser(9999);
+        this.mockMvc.perform(delete("/user/9999"))
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
+    }
+
+    @Test
+    public void shouldHandleValidPutRequest() throws Exception {
+        this.mockMvc.perform(put("/user/10"))
+                .andExpect(status().is(204))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
+        verify(mockUserService).toggleStatus(10);
+    }
+
+    @Test
+    public void shouldHandlePutRequestWithNonExistentId() throws Exception {
+        doThrow(BadDataException.class)
+                .when(mockUserService)
+                .toggleStatus(3993);
+        this.mockMvc.perform(put("/user/3993"))
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$").doesNotHaveJsonPath());
     }
 }
